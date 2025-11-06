@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it312_final_project/widgets/labeled_field.dart';
+import 'package:go_router/go_router.dart';
 
 class LoanRequest extends StatefulWidget {
   const LoanRequest({super.key});
@@ -31,7 +32,7 @@ class LoanRequestDetails extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(10.0),
             onTap: () { 
-
+              context.go('/loan_request/requests_form');
             },
             child: Padding(
               padding: const EdgeInsets.all(16.0),
