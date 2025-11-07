@@ -36,7 +36,7 @@ class GuardianDetails {
   }
 
   static Future<GuardianDetails> fromId(int id) async {
-    Response response = await post(Uri.parse('localhost/$requestUrl/get_guardian_details.php'), body: {'id': id});
+    Response response = await post(Uri.parse('$requestUrl/get_guardian_details.php'), body: {'id': id});
     if (response.statusCode != 200) {
       throw Exception(response.body);
     }
@@ -71,7 +71,7 @@ class GuardianDetails {
     if (operation != 'add' || operation != 'update') {
       throw Exception('Parameter:operation must be set to either "add" or "update".');
     }
-    Response response = await post(Uri.parse('localhost/$requestUrl/${operation}_guardian_details.php'),
+    Response response = await post(Uri.parse('$requestUrl/${operation}_guardian_details.php'),
       body: {
         'id': id,
         'fullName': fullName,

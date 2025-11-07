@@ -25,7 +25,7 @@ class StudentDetails {
   }
 
   static Future<StudentDetails> fromId(int id) async {
-    Response response = await post(Uri.parse('localhost/$requestUrl/get_student_details.php'), body: {'id': id});
+    Response response = await post(Uri.parse('$requestUrl/get_student_details.php'), body: {'id': id});
     if (response.statusCode != 200) {
       throw Exception(response.body);
     }
@@ -45,7 +45,7 @@ class StudentDetails {
     if (operation != 'add' || operation != 'update') {
       throw Exception('Parameter:operation must be set to either "add" or "update".');
     }
-    Response response = await post(Uri.parse('localhost/$requestUrl/${operation}_student_details.php'),
+    Response response = await post(Uri.parse('$requestUrl/${operation}_student_details.php'),
       body: {
         'id': id,
         'fullName': fullName,
