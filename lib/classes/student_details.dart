@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:it312_final_project/constants/constants.dart';
+import 'package:it312_final_project/extensions/string_utilities.dart';
 
 class StudentDetails {
   int id;  
@@ -18,7 +18,11 @@ class StudentDetails {
     this.email, 
     this.phoneNumber, 
     this.address
-  );
+  ) {
+    if (!phoneNumber.isNumeric() || phoneNumber.length > 11) {
+      throw Exception('Phone Numbers must be numeric and in the 0********** format.');
+    }
+  }
 
   static Future<StudentDetails> fromId(int id) async {
     Response response = await post(Uri.parse('localhost/$requestUrl/get_student_details.php'), body: {'id': id});
@@ -37,15 +41,18 @@ class StudentDetails {
     return StudentDetails(id, fullName, dateOfBirth, email, phoneNumber, address);
   }
 
-  static Future<String> submit(StudentDetails studentDetails) async {
-    Response response = await post(Uri.parse('localhost/$requestUrl/add_student_details.php'),
+  Future<String> submit(String operation) async {
+    if (operation != 'add' || operation != 'update') {
+      throw Exception('Parameter:operation must be set to either "add" or "update".');
+    }
+    Response response = await post(Uri.parse('localhost/$requestUrl/${operation}_student_details.php'),
       body: {
-        'id': studentDetails.id,
-        'fullName': studentDetails.fullName,
-        'dateOfBirth': studentDetails.dateOfBirth,
-        'email': studentDetails.email,
-        'phoneNumber': studentDetails.phoneNumber,
-        'address': studentDetails.address,
+        'id': id,
+        'fullName': fullName,
+        'dateOfBirth': dateOfBirth,
+        'email': email,
+        'phoneNumber': phoneNumber,
+        'address': address,
       },
     );
     if (response.statusCode != 200) {
