@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:it312_final_project/widgets/labeled_field.dart';
 
 class ProfileDetails extends StatefulWidget {
@@ -31,8 +32,8 @@ class StudentDetails extends StatelessWidget {
         Card(
           child: InkWell(
             borderRadius: BorderRadius.circular(10.0),
-            onTap: () { 
-
+            onTap: () {
+              context.go('/profile_details/student_details_form');
             },
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -68,7 +69,7 @@ class GuardianDetails extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(10.0),
             onTap: () {
-
+              context.go('/profile_details/guardian_details_form');
             },
             child: Padding(
               padding: const EdgeInsets.all(16.0),

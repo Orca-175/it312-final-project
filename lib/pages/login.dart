@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -27,8 +28,24 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 24.0),
               FilledButton(
-                onPressed: () {}, 
+                    onPressed: () {
+                      // TODO: Add actual authentication
+                      context.go('/');
+                    }, 
                 child: Text('Login'),
+              ),
+              SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Don\'t have an account? '),
+                  TextButton(
+                    onPressed: () {
+                      context.go('/register');
+                    }, 
+                    child: Text('Register'),
+                  ),
+                ],
               ),
             ],
           ),

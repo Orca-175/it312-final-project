@@ -28,8 +28,7 @@ class _RequestsFormState extends State<RequestsForm> {
   String? _paymentTerm;
   String? _paymentSchedule;
   String? _enrollmentStatus;
- 
- 
+
   @override
   Widget build(BuildContext context) { 
     return Center(
@@ -40,6 +39,9 @@ class _RequestsFormState extends State<RequestsForm> {
             children: [
               SizedBox(height: 16.0),
               Text('Requests Details', style: TextStyle(fontSize: 20.0)),
+              TextFormField(
+                decoration: InputDecoration(label: Text('School ID')),
+              ),
               TextFormField(
                 decoration: InputDecoration(label: Text('General Weighted Average')),
               ),

@@ -185,7 +185,7 @@ class NoRequestPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: Colors.yellow[100],
         borderRadius: const BorderRadius.all(Radius.circular(10.0)), 
       ),
       child: Padding(
