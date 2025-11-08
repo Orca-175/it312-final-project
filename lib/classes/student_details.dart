@@ -4,41 +4,70 @@ import 'package:it312_final_project/constants/constants.dart';
 import 'package:it312_final_project/extensions/string_utilities.dart';
 
 class StudentDetails {
-  int id;  
-  String fullName;
-  String dateOfBirth;
-  String email;
-  String phoneNumber;
-  String address;
+  late final int id;  
+  late String fullName;
+  late String dateOfBirth;
+  late String email;
+  late String phoneNumber;
+  late String address;
 
-  StudentDetails(
+  StudentDetails._internal(
     this.id, 
-    this.fullName, 
-    this.dateOfBirth, 
-    this.email, 
-    this.phoneNumber, 
-    this.address
+    {
+      required this.fullName, 
+      required this.dateOfBirth, 
+      required this.email, 
+      required this.phoneNumber, 
+      required this.address
+    }
+  );
+
+  factory StudentDetails(
+    int id, 
+    {
+      String fullName = '', 
+      String dateOfBirth = '', 
+      String email = '', 
+      String phoneNumber = '', 
+      String address = '',
+    }
   ) {
-    if (!phoneNumber.isNumeric() || phoneNumber.length > 11) {
+    if (phoneNumber != '' && (!phoneNumber.isNumeric() || phoneNumber.length > 11)) {
       throw Exception('Phone Numbers must be numeric and in the 0********** format.');
     }
+
+    return StudentDetails._internal(
+      id,
+      fullName: fullName,
+      dateOfBirth: dateOfBirth,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+    );
   }
 
   static Future<StudentDetails> fromId(int id) async {
-    Response response = await post(Uri.parse('$requestUrl/get_student_details.php'), body: {'id': id});
+    Response response = await post(Uri.parse('$requestUrl/get_student_details.php'), body: {'id': id.toString()});
     if (response.statusCode != 200) {
       throw Exception(response.body);
     }
 
     Map responseData = jsonDecode(response.body);
 
-    String fullName = responseData['fullName'];
-    String dateOfBirth = responseData['dateOfBirth'];
+    String fullName = responseData['full_name'];
+    String dateOfBirth = responseData['date_of_birth'];
     String email = responseData['email'];
-    String phoneNumber = responseData['phoneNumber'];
+    String phoneNumber = responseData['phone_number'];
     String address = responseData['address'];
 
-    return StudentDetails(id, fullName, dateOfBirth, email, phoneNumber, address);
+    return StudentDetails(
+      id,
+      fullName: fullName,
+      dateOfBirth: dateOfBirth,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+    );
   }
 
   Future<String> submit(String operation) async {

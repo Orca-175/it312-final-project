@@ -1,1 +1,1 @@
-String requestUrl = 'localhost/it312_final_project';
+String requestUrl = 'http://localhost:8080/it312_final_project';
