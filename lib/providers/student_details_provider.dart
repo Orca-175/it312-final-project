@@ -30,7 +30,7 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
     return await state.submit(operation);
   }
 
-  void requestStudentDetails(int id) async {
+  Future<void> requestStudentDetails(int id) async {
     state = await StudentDetails.fromId(id);
   }
 }

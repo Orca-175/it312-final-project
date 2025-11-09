@@ -60,7 +60,7 @@ class StudentDetails {
     String phoneNumber = responseData['phone_number'];
     String address = responseData['address'];
 
-    return StudentDetails(
+    return StudentDetails._internal(
       id,
       fullName: fullName,
       dateOfBirth: dateOfBirth,
@@ -89,5 +89,13 @@ class StudentDetails {
     }
 
     return response.body;
+  }
+
+  bool anyEmptyFields() {
+    if (fullName == '' || dateOfBirth == '' || email == '' || phoneNumber == '' || address == '') {
+      return true;
+    }
+    
+    return false;
   }
 }

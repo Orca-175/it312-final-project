@@ -11,5 +11,12 @@ class Authentication {
     return int.parse(response.body);
   }
 
-  // TODO: Add registration
+  static Future<String> register(String username, String password) async {
+    Response response = await post(Uri.parse('$requestUrl/register_user.php'), body: {'username': username, 'password': password});
+    if (response.statusCode != 200) {
+      throw Exception(response.body);
+    }
+
+    return response.body.toString();
+  }
 }

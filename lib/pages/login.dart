@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:it312_final_project/classes/authentication.dart';
+import 'package:it312_final_project/extensions/string_utilities.dart';
 import 'package:it312_final_project/globals/globals.dart';
+import 'package:it312_final_project/widgets/header_message_dialog.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -41,18 +43,39 @@ class _LoginState extends State<Login> {
                 onSaved: (value) {
                   _password = value!;
                 },
+                validator: (value) {
+                  if (value!.length < 8) {
+                    return 'Password must be 8 characters or more.';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 24.0),
               FilledButton(
                     onPressed: () async {
-                      _loginGlobalKey.currentState!.save();
-                      try {
-                        globalUserAccountId =  await Authentication.login(_username, _password);
-                        if (!context.mounted) return;
-                        context.go('/test');
-                      } catch (exception) {
-                        // TODO: Add exception message
-                        print(exception);
+                      if (_loginGlobalKey.currentState!.validate()) {
+                        _loginGlobalKey.currentState!.save();
+                        try {
+                          globalUserAccountId =  await Authentication.login(_username, _password);
+                          if (!context.mounted) return;
+                          context.go('/test');
+                        } catch (exception) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return HeaderMessageDialog(
+                                header: 'Credentials Error', 
+                                message: exception.toString().removeExceptionPrefix(),
+                                action: TextButton(
+                                  onPressed: () {
+                                    context.pop();
+                                  }, 
+                                  child: const Text('Dismiss'),
+                                ),
+                              );
+                            }
+                          );
+                        }
                       }
                     }, 
                 child: const Text('Login'),
