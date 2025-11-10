@@ -10,7 +10,7 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
     return StudentDetails(id); // Initializes with globalUserAccountId from lib/globals/globals.dart
   }
 
-  Future<String> submitStudentDetails(
+  Future<String> submitDetails(
     String fullName,
     String dateOfBirth, 
     String email, 
@@ -30,7 +30,7 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
     return await state.submit(operation);
   }
 
-  Future<void> requestStudentDetails(int id) async {
+  Future<void> getDetails(int id) async {
     state = await StudentDetails.fromId(id);
   }
 }

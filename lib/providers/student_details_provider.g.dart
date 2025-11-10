@@ -60,7 +60,7 @@ final class StudentDetailsNotifierProvider
 }
 
 String _$studentDetailsNotifierHash() =>
-    r'87fadc74bb1d894133e1389576a4d053d1bba1a4';
+    r'ada4ae483659b0ead0bd378a9a43583ff3e31a19';
 
 final class StudentDetailsNotifierFamily extends $Family
     with

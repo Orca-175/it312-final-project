@@ -13,13 +13,11 @@ class StudentDetails {
 
   StudentDetails._internal(
     this.id, 
-    {
-      required this.fullName, 
-      required this.dateOfBirth, 
-      required this.email, 
-      required this.phoneNumber, 
-      required this.address
-    }
+    this.fullName, 
+    this.dateOfBirth, 
+    this.email, 
+    this.phoneNumber, 
+    this.address
   );
 
   factory StudentDetails(
@@ -33,16 +31,16 @@ class StudentDetails {
     }
   ) {
     if (phoneNumber != '' && (!phoneNumber.isNumeric() || phoneNumber.length > 11)) {
-      throw Exception('Phone Numbers must be numeric and in the 0********** format.');
+      throw Exception('Phone numbers must be numeric and, at most, 11 digits long.');
     }
 
     return StudentDetails._internal(
       id,
-      fullName: fullName,
-      dateOfBirth: dateOfBirth,
-      email: email,
-      phoneNumber: phoneNumber,
-      address: address,
+      fullName,
+      dateOfBirth,
+      email,
+      phoneNumber,
+      address,
     );
   }
 
@@ -62,11 +60,11 @@ class StudentDetails {
 
     return StudentDetails._internal(
       id,
-      fullName: fullName,
-      dateOfBirth: dateOfBirth,
-      email: email,
-      phoneNumber: phoneNumber,
-      address: address,
+      fullName,
+      dateOfBirth,
+      email,
+      phoneNumber,
+      address,
     );
   }
 
@@ -76,7 +74,7 @@ class StudentDetails {
     }
     Response response = await post(Uri.parse('$requestUrl/${operation}_student_details.php'),
       body: {
-        'id': id,
+        'id': id.toString(),
         'fullName': fullName,
         'dateOfBirth': dateOfBirth,
         'email': email,
@@ -92,7 +90,7 @@ class StudentDetails {
   }
 
   bool anyEmptyFields() {
-    if (fullName == '' || dateOfBirth == '' || email == '' || phoneNumber == '' || address == '') {
+    if (id == 0 || fullName == '' || dateOfBirth == '' || email == '' || phoneNumber == '' || address == '') {
       return true;
     }
     

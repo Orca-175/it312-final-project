@@ -15,7 +15,8 @@ class GuardianDetails {
   String employerPhoneNumber;
   String monthlyIncome;
 
-  GuardianDetails(
+
+  GuardianDetails._internal(
     this.id, 
     this.fullName, 
     this.relationship, 
@@ -26,36 +27,64 @@ class GuardianDetails {
     this.employer, 
     this.employerPhoneNumber,
     this.monthlyIncome,
+  );
+
+  factory GuardianDetails(
+    int id,
+    {
+      String fullName = '',
+      String relationship = '',
+      String email = '',
+      String phoneNumber = '',
+      String address = '',
+      String occupation = '',
+      String employer = '',
+      String employerPhoneNumber = '',
+      String monthlyIncome = '',
+    }
   ) {
-    if (!phoneNumber.isNumeric() || !employerPhoneNumber.isNumeric() || 
-        phoneNumber.length > 11 || employerPhoneNumber.length > 11) {
-      throw Exception('Phone Numbers must be numeric and in the 0********** format.');
-    } else if (!monthlyIncome.isNumeric()) {
+    if (phoneNumber != '' && (!phoneNumber.isNumeric() || !employerPhoneNumber.isNumeric() || 
+        phoneNumber.length > 11 || employerPhoneNumber.length > 11)) {
+      throw Exception('Phone numbers must be numeric and, at most, 11 digits long.');
+    } else if (monthlyIncome != '' && !monthlyIncome.isNumeric()) {
       throw Exception('Monthly Income must be numeric.');
     }
+
+    return GuardianDetails._internal(
+      id,
+      fullName,
+      relationship,
+      email,
+      phoneNumber,
+      address,
+      occupation,
+      employer,
+      employerPhoneNumber,
+      monthlyIncome,
+    );
   }
 
   static Future<GuardianDetails> fromId(int id) async {
-    Response response = await post(Uri.parse('$requestUrl/get_guardian_details.php'), body: {'id': id});
+    Response response = await post(Uri.parse('$requestUrl/get_guardian_details.php'), body: {'id': id.toString()});
     if (response.statusCode != 200) {
       throw Exception(response.body);
     }
 
     Map responseData = jsonDecode(response.body);
 
-    String fullName = responseData['fullName'];
+    String fullName = responseData['full_name'];
     String relationship = responseData['relationship'];
     String email = responseData['email'];
-    String phoneNumber = responseData['phoneNumber'];
+    String phoneNumber = responseData['phone_number'];
     String address = responseData['address'];
     String occupation = responseData['occupation'];
     String employer= responseData['employer'];
-    String employerPhoneNumber = responseData['employerPhoneNumber'];
-    String monthlyIncome = responseData['monthlyIncome'];
+    String employerPhoneNumber = responseData['employer_phone_number'];
+    String monthlyIncome = responseData['monthly_income'];
 
-    return GuardianDetails(
+    return GuardianDetails._internal(
       id, 
-      fullName, 
+      fullName,  
       relationship, 
       email, 
       phoneNumber, 
@@ -63,7 +92,7 @@ class GuardianDetails {
       occupation, 
       employer, 
       employerPhoneNumber, 
-      monthlyIncome
+      monthlyIncome,
     );
   }
 
@@ -73,16 +102,16 @@ class GuardianDetails {
     }
     Response response = await post(Uri.parse('$requestUrl/${operation}_guardian_details.php'),
       body: {
-        'id': id,
-        'fullName': fullName,
+        'id': id.toString(),
+        'full_name': fullName,
         'relationship': relationship,
         'email': email,
-        'phoneNumber': phoneNumber,
+        'phone_number': phoneNumber,
         'address': address,
         'occupation': occupation,
         'employer': employer,
-        'employerPhoneNumber': employerPhoneNumber,
-        'monthlyIncome': monthlyIncome,
+        'employer_phone_number': employerPhoneNumber,
+        'monthly_income': monthlyIncome,
       },
     );
     if (response.statusCode != 200) {
@@ -90,5 +119,23 @@ class GuardianDetails {
     }
 
     return response.body;
+  }
+
+  bool anyEmptyFields() {
+    if (
+      fullName == '' || 
+      relationship == '' || 
+      email == '' || 
+      phoneNumber == '' || 
+      address == '' || 
+      occupation == '' ||
+      employer == '' ||
+      employerPhoneNumber == '' ||
+      monthlyIncome == ''
+    ) {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -11,7 +11,7 @@ import 'package:it312_final_project/pages/student_details_form.dart';
 import 'package:it312_final_project/tests/test.dart';
 
 GoRouter router = GoRouter(
-  initialLocation: '/register', // initialLocation: '/login',
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/test',

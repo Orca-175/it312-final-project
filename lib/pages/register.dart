@@ -70,7 +70,7 @@ class _RegisterState extends State<Register> {
                         context: context, 
                         builder: (context) {
                           return HeaderMessageDialog(
-                            header: 'Success', 
+                            header: 'Successfully Registered', 
                             message: '$successMessage Once your account has been approved, you will be able to login.',
                             action: TextButton(
                               onPressed: () {
@@ -86,7 +86,7 @@ class _RegisterState extends State<Register> {
                         context: context, 
                         builder: (context) {
                           return HeaderMessageDialog(
-                            header: 'Credentials Error', 
+                            header: 'Registration Failed', 
                             message: exception.toString().removeExceptionPrefix(),
                             action: TextButton(
                               onPressed: () {

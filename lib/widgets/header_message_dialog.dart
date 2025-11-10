@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:it312_final_project/extensions/string_utilities.dart';
 
 class HeaderMessageDialog extends StatelessWidget {
   final String header;
