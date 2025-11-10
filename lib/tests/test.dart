@@ -24,7 +24,7 @@ class _TestState extends ConsumerState<Test> {
       .getDetails(globalUserAccountId)
       .catchError((error) {
         setState(() {
-          errorMessage = 'From Student Details: $errorMessage\n${error.toString()}';
+          errorMessage = '$errorMessage\n${error.toString()}';
         });
       });
 
@@ -33,7 +33,7 @@ class _TestState extends ConsumerState<Test> {
       .getDetails(globalUserAccountId)
       .catchError((error) {
         setState(() {
-          errorMessage = 'From Guardian Details: $errorMessage\n${error.toString()}';
+          errorMessage = '$errorMessage\n${error.toString()}';
         });
       });
 
@@ -42,7 +42,7 @@ class _TestState extends ConsumerState<Test> {
       .getDetails(globalUserAccountId)
       .catchError((error) {
         setState(() {
-          errorMessage = 'From Requests: $errorMessage\n${error.toString()}';
+          errorMessage = '$errorMessage ${error.toString()}';
         });
       });
   }
@@ -57,7 +57,7 @@ class _TestState extends ConsumerState<Test> {
       return _RootColumn(
         children: [
           const SizedBox(height: 80.0),
-          Text('Error', style: const TextStyle(fontSize: 20.0)),
+          const Text('Error', style: TextStyle(fontSize: 20.0)),
           const SizedBox(height: 8.0),
           Text(errorMessage),
         ],
@@ -67,11 +67,11 @@ class _TestState extends ConsumerState<Test> {
     return _RootColumn(
       children: [
         const SizedBox(height: 40.0),
-        Text('Test Widget', style: const TextStyle(fontSize: 20.0)),
+        const Text('Test Widget', style: TextStyle(fontSize: 20.0)),
         if (!studentDetails.anyEmptyFields())
           ...[
             const SizedBox(height: 16.0),
-            Text('Student Details', style: const TextStyle(fontSize: 20.0)),
+            const Text('Student Details', style: TextStyle(fontSize: 20.0)),
             Text('Name: ${studentDetails.fullName}'),
             Text('Date of Birth: ${studentDetails.dateOfBirth}'),
             Text('Email: ${studentDetails.email}'),
@@ -81,7 +81,7 @@ class _TestState extends ConsumerState<Test> {
         if (!guardianDetails.anyEmptyFields())
           ...[
             const SizedBox(height: 16.0),
-            Text('Guardian Details', style: const TextStyle(fontSize: 20.0)),
+            const Text('Guardian Details', style: TextStyle(fontSize: 20.0)),
             Text('Name: ${guardianDetails.fullName}'),
             Text('Relationship: ${guardianDetails.relationship}'),
             Text('Email: ${guardianDetails.email}'),
@@ -95,7 +95,7 @@ class _TestState extends ConsumerState<Test> {
         if (!request.anyEmptyFields())
           ...[
             const SizedBox(height: 16.0),
-            Text('Loan Request Details', style: const TextStyle(fontSize: 20.0)),
+            const Text('Loan Request Details', style: TextStyle(fontSize: 20.0)),
             Text('Studend ID: ${request.studentId}'),
             Text('GWA: ${request.generalWeightedAverage}'),
             Text('Loan Amount: ${request.loanAmount}'),

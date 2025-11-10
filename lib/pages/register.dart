@@ -15,7 +15,6 @@ class _RegisterState extends State<Register> {
   final _registerGlobalKey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
-  String _confirmPassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +33,12 @@ class _RegisterState extends State<Register> {
                 onSaved: (value) {
                   _username = value!;
                 },
+                validator: (value) {
+                  if (value == '') {
+                    return 'Username must not be empty.';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 obscureText: true,
@@ -41,7 +46,9 @@ class _RegisterState extends State<Register> {
                 onChanged: (value) => _password = value,
                 onSaved: (value) => _password = value!,
                 validator: (value) {
-                  if (value!.length < 8) {
+                  if (value == '') {
+                    return 'Password must not be empty.';
+                  } else if (value!.length < 8) {
                     return 'Password must be 8 characters or more.';
                   }
                   return null;
@@ -50,10 +57,9 @@ class _RegisterState extends State<Register> {
               TextFormField(
                 obscureText: true,
                 decoration: const InputDecoration(label: Text(('Confirm Password'))),
-                onSaved: (value) => _confirmPassword = value!,
                 validator: (value) {
                   if (_password != value) {
-                    return 'Confirm Password must match Password.';
+                    return 'Confirm Password does not match Password.';
                   }
                   return null;
                 },

@@ -35,6 +35,12 @@ class _LoginState extends State<Login> {
                 onSaved: (value) {
                   _username = value!;
                 },
+                validator: (value) {
+                  if (value == '') {
+                    return 'Username must not be empty.';
+                  }
+                  return null;
+                }
               ),
               TextFormField(
                 obscureText: true,
@@ -44,7 +50,9 @@ class _LoginState extends State<Login> {
                   _password = value!;
                 },
                 validator: (value) {
-                  if (value!.length < 8) {
+                  if (value == '') {
+                    return 'Password must not be empty.';
+                  } else if (value!.length < 8) {
                     return 'Password must be 8 characters or more.';
                   }
                   return null;
