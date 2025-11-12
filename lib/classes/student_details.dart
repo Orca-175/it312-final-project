@@ -69,7 +69,8 @@ class StudentDetails {
   }
 
   Future<String> submit(String operation) async {
-    if (operation != 'add' || operation != 'update') {
+    if (!(operation == 'add' ||  operation == 'update')) {
+      print('operation in submit: $operation');
       throw Exception('Parameter:operation must be set to either "add" or "update".');
     }
     Response response = await post(Uri.parse('$requestUrl/${operation}_student_details.php'),
