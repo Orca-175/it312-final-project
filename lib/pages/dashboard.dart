@@ -6,6 +6,8 @@ import 'package:it312_final_project/providers/guardian_details_provider.dart';
 import 'package:it312_final_project/providers/requests_provider.dart';
 import 'package:it312_final_project/providers/student_details_provider.dart';
 import 'package:it312_final_project/widgets/labeled_field.dart';
+import 'package:it312_final_project/widgets/root_card.dart';
+import 'package:it312_final_project/widgets/root_column.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({super.key});
@@ -22,7 +24,6 @@ class _DashboardState extends ConsumerState<Dashboard> {
   @override
   void initState() {
     super.initState();
-
     getUserDetails();
   }
 
@@ -75,16 +76,14 @@ class _DashboardState extends ConsumerState<Dashboard> {
     }
 
     return RefreshIndicator(
-      onRefresh: () async {
-        await getUserDetails();
-      },
+      onRefresh: () async => await getUserDetails(),
       child: ListView(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children:  [
-              _RootCard(
-                child: _RootColumn(
+              RootCard(
+                child: RootColumn(
                   header: 'Profile', 
                   children: [
                     if (studentDetails.anyEmptyFields()) ...[
@@ -116,7 +115,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                           LabeledField(data: guardianDetails.occupation, label: 'Occupation'),
                           LabeledField(
                             data: '₱${guardianDetails.monthlyIncome.seperateNumberByThousands()}', 
-                            label: 'Monthly Income'
+                            label: 'Monthly Income',
                           ),
                           LabeledField(data: guardianDetails.email, label: 'Email'),
                           LabeledField(data: guardianDetails.phoneNumber, label: 'Phone Number'),
@@ -126,8 +125,8 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ],
                 ),
               ),
-              _RootCard(
-                child: _RootColumn(
+              RootCard(
+                child: RootColumn(
                   header: 'Request Status',
                   children: [
                     request,
@@ -138,39 +137,6 @@ class _DashboardState extends ConsumerState<Dashboard> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _RootCard extends StatelessWidget {
-  final Widget child;
-  const _RootCard({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: child,
-      ),
-    );
-  }
-}
-
-class _RootColumn extends StatelessWidget {
-  final String header;
-  final List<Widget> children;
-  const _RootColumn({required this.header, required this.children});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text('$header:', style: const TextStyle(fontSize: 20.0)),
-        const SizedBox(height: 12.0),
-        ...children,
-      ],
     );
   }
 }
@@ -306,7 +272,6 @@ class _NoRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.yellow[100],
         borderRadius: const BorderRadius.all(Radius.circular(10.0)), 
       ),
       child: Padding(

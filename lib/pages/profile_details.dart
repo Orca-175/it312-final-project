@@ -1,97 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:it312_final_project/extensions/string_utilities.dart';
+import 'package:it312_final_project/globals/globals.dart';
+import 'package:it312_final_project/providers/guardian_details_provider.dart';
+import 'package:it312_final_project/providers/student_details_provider.dart';
 import 'package:it312_final_project/widgets/labeled_field.dart';
+import 'package:it312_final_project/widgets/root_card_clickable.dart';
+import 'package:it312_final_project/widgets/root_column.dart';
 
-class ProfileDetails extends StatefulWidget {
+class ProfileDetails extends ConsumerStatefulWidget {
   const ProfileDetails({super.key});
 
   @override
-  State<ProfileDetails> createState() => _ProfileDetailsState();
+  ConsumerState<ProfileDetails> createState() => _ProfileDetailsState();
 }
 
-class _ProfileDetailsState extends State<ProfileDetails> {
+class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
+  String studentDetailsError = '';
+  String guardianDetailsError = '';
+
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        StudentDetails(),
-        GuardianDetails(),
-      ],
-    );
+  void initState() {
+    super.initState();
+    getProfileDetails();
   }
-}
 
-class StudentDetails extends StatelessWidget {
-  const StudentDetails({super.key});
+  Future<void> getProfileDetails() async {
+    await ref.read(studentDetailsProvider(globalUserAccountId).notifier)
+      .getDetails(globalUserAccountId)
+      .catchError((error) {
+        setState(() {
+          studentDetailsError = error.toString().removeExceptionPrefix(); // Will be displayed to user if not found.
+        });
+      });  
+
+    await ref.read(guardianDetailsProvider(globalUserAccountId).notifier)
+      .getDetails(globalUserAccountId)
+      .catchError((error) {
+        setState(() {
+          guardianDetailsError = error.toString().removeExceptionPrefix(); // Will be displayed to user if not found.
+        });
+      });
+
+    return;  
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Card(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(10.0),
-            onTap: () {
-              context.go('/profile_details/student_details_form');
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text('Student Details:', style: TextStyle(fontSize: 20.0)),
-                  SizedBox(height: 8.0),
-                  LabeledField(data: 'Stephen Gabriel L. Orca', label: 'Name'),
-                  LabeledField(data: '2004-12-17', label: 'Date of Birth'),
-                  LabeledField(data: 'sglorca@dbtcmandaluyong.one-bosco.org', label: 'Email'),
-                  LabeledField(data: '09999999999', label: 'Phone'),
-                  LabeledField(data: 'Mandaluyong City, Metro Manila', label: 'Address')
-                ],
+    final studentDetails = ref.watch(studentDetailsProvider(globalUserAccountId));
+    final guardianDetails = ref.watch(guardianDetailsProvider(globalUserAccountId));
+
+    return RefreshIndicator(
+      onRefresh: () async => await getProfileDetails(),
+      child: ListView(
+        children: [
+          Column(
+            children: [
+              RootCardClickable(
+                onTap: () => context.go('/profile_details/student_details_form'),
+                child: RootColumn(
+                  header: 'Student Details',
+                  children: [
+                    if (studentDetails.anyEmptyFields()) ...[
+                      Text(studentDetailsError, textAlign: TextAlign.center),
+                    ] else ...[
+                      LabeledField(data: studentDetails.fullName, label: 'Full Name'),
+                      LabeledField(data: studentDetails.dateOfBirth, label: 'Date of Birth'),
+                      LabeledField(data: studentDetails.email, label: 'Email'),
+                      LabeledField(data: studentDetails.phoneNumber, label: 'Phone Number'),
+                      LabeledField(data: studentDetails.address, label: 'Address'),
+                    ]
+                  ]
+                ),
               ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class GuardianDetails extends StatelessWidget {
-  const GuardianDetails({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Card(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(10.0),
-            onTap: () {
-              context.go('/profile_details/guardian_details_form');
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text('Guardian Details:', style: TextStyle(fontSize: 20.0)),
-                  SizedBox(height: 8.0),
-                  LabeledField(data: 'Raphael Owen T. Oduya', label: 'Name'),
-                  LabeledField(data: 'Mother', label: 'Relationship'),
-                  LabeledField(data: 'rotoduya@dbtcmandaluyong.one-bosco.org', label: 'Email'),
-                  LabeledField(data: '09999999999', label: 'Phone'),
-                  LabeledField(data: 'Mandaluyong City, Metro Manila', label: 'Address'),
-                  LabeledField(data: 'Ninja', label: 'Occupation'),
-                  LabeledField(data: 'P50,000', label: 'Monthly Income'),
-                ],
+              RootCardClickable(
+                onTap: () => context.go('/profile_details/guardian_details_form'),
+                child: RootColumn(
+                  header: 'Guardian Details',
+                  children: [
+                    if (guardianDetails.anyEmptyFields()) ...[
+                      Text(studentDetailsError, textAlign: TextAlign.center),
+                    ] else ...[
+                      LabeledField(data: guardianDetails.fullName, label: 'Full Name'),
+                      LabeledField(data: guardianDetails.relationship, label: 'Date of Birth'),
+                      LabeledField(data: guardianDetails.email, label: 'Email'),
+                      LabeledField(data: guardianDetails.phoneNumber, label: 'Phone Number'),
+                      LabeledField(data: guardianDetails.address, label: 'Address'),
+                      LabeledField(data: guardianDetails.occupation, label: 'Occupation'),
+                      LabeledField(data: guardianDetails.employer, label: 'Employer'),
+                      LabeledField(data: guardianDetails.employerPhoneNumber, label: 'Employer Phone Number'),
+                      LabeledField(
+                        data: '₱${guardianDetails.monthlyIncome.seperateNumberByThousands()}', 
+                        label: 'Monthly Income',
+                      ),
+                    ]
+                  ]
+                ),
               ),
-            ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
-
