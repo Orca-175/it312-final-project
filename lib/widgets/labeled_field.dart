@@ -10,7 +10,7 @@ class LabeledField extends StatelessWidget {
     return Center(
       child: Row(
         children: [
-          Text('$label:'),
+          Text('$label: '),
           Expanded(child: Text(data, textAlign: TextAlign.end)),
         ],
       ),

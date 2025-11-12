@@ -148,7 +148,20 @@ class Requests {
     return false;
   }
 
-  static bool verifyLoanAmount(int generalWeightedAverage, int loanAmount) {
+  String getAmountDue() {
+    if (paymentTerm == 'Monthly') {
+      if (paymentSchedule == '3 Months') {
+        return (double.parse(loanAmount) / 3 * 1.03).round().toString();
+      } else if (paymentSchedule == '6 Months') {
+        return (double.parse(loanAmount) / 6 * 1.04).round().toString();
+      } else if (paymentSchedule == '12 Months') {
+        return (double.parse(loanAmount) / 12 * 1.05).round().toString();
+      }
+    }
+    return (double.parse(loanAmount) * 1.01).round().toString();
+  }
+
+  static bool loanAmountIsValid(int generalWeightedAverage, int loanAmount) {
     if (generalWeightedAverage <= 1.25 && loanAmount <= 75000) {
         return true;
     } else if (generalWeightedAverage <= 1.75 && loanAmount <= 60000) {
