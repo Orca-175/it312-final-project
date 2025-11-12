@@ -38,7 +38,7 @@ class GuardianDetailsNotifier extends _$GuardianDetailsNotifier {
     return await state.submit(operation);
   }
 
-  Future<void> getDetails(int id) async {
-    state = await GuardianDetails.fromId(id);
+  Future<void> getDetails() async {
+    state = await GuardianDetails.fromId(state.id);
   }
 }

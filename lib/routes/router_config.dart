@@ -111,7 +111,14 @@ class RootScaffold extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('ScholarPay'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(width: 80.0, child: Image.asset('assets/brand/scholarpay_logo_variant3.png')), 
+            Text(' | '), 
+            Text('ScholarPay'),
+          ],
+        ),
       ),
       body: body,
       bottomNavigationBar: bottomNavigationBar,

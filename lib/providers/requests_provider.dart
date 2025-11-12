@@ -36,7 +36,7 @@ class RequestsNotifier extends _$RequestsNotifier {
     return await state.submit(operation);
   }
 
-  Future<void> getDetails(int id) async {
-    state = await Requests.fromId(id);
+  Future<void> getDetails() async {
+    state = await Requests.fromId(state.id);
   }
 }

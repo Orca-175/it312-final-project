@@ -29,7 +29,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
 
   Future<void> getUserDetails() async {
     await ref.read(studentDetailsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((error) {
         setState(() {
           studentDetailsError = error.toString().removeExceptionPrefix(); // Will be displayed to user if not found.
@@ -37,7 +37,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
       });  
 
     await ref.read(guardianDetailsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((error) {
         setState(() {
           guardianDetailsError = error.toString().removeExceptionPrefix(); // Will be displayed to user if not found.
@@ -45,7 +45,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
       });  
 
     await ref.read(requestsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((_) {
         setState(() {
           requestHasLoaded = true; // Request has its own way showing it hasn't been found.

@@ -28,7 +28,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
 
   Future<void> getProfileDetails() async {
     await ref.read(studentDetailsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((error) {
         setState(() {
           studentDetailsError = error.toString().removeExceptionPrefix(); // Will be displayed to user if not found.
@@ -36,7 +36,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
       });  
 
     await ref.read(guardianDetailsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((error) {
         setState(() {
           guardianDetailsError = error.toString().removeExceptionPrefix(); // Will be displayed to user if not found.
@@ -80,7 +80,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                   header: 'Guardian Details',
                   children: [
                     if (guardianDetails.anyEmptyFields()) ...[
-                      Text(studentDetailsError, textAlign: TextAlign.center),
+                      Text(guardianDetailsError, textAlign: TextAlign.center),
                     ] else ...[
                       LabeledField(data: guardianDetails.fullName, label: 'Full Name'),
                       LabeledField(data: guardianDetails.relationship, label: 'Date of Birth'),

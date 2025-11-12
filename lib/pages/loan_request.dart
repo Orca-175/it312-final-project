@@ -1,21 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:it312_final_project/extensions/string_utilities.dart';
+import 'package:it312_final_project/globals/globals.dart';
+import 'package:it312_final_project/providers/requests_provider.dart';
 import 'package:it312_final_project/widgets/labeled_field.dart';
 import 'package:go_router/go_router.dart';
+import 'package:it312_final_project/widgets/root_card_clickable.dart';
+import 'package:it312_final_project/widgets/root_column.dart';
 
-class LoanRequest extends StatefulWidget {
+class LoanRequest extends ConsumerStatefulWidget {
   const LoanRequest({super.key});
 
   @override
-  State<LoanRequest> createState() => _LoanRequestState();
+  ConsumerState<LoanRequest> createState() => _LoanRequestState();
 }
 
-class _LoanRequestState extends State<LoanRequest> {
+class _LoanRequestState extends ConsumerState<LoanRequest> {
+  String requestDetailsError = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getRequestDetails();
+  }
+
+  Future<void> getRequestDetails() async {
+    await ref.read(requestsProvider(globalUserAccountId).notifier)
+      .getDetails()
+      .catchError((error) {
+        setState(() {
+          requestDetailsError = error.toString().removeExceptionPrefix();
+        });
+      });
+
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        LoanRequestDetails(),
-      ],
+    final requestDetails = ref.watch(requestsProvider(globalUserAccountId));
+
+    return RefreshIndicator(
+      onRefresh: () async => await getRequestDetails(),
+      child: ListView(
+        children: [
+          RootCardClickable(
+            onTap: () => context.go('/loan_request/requests_form'), 
+            child: RootColumn(
+              header: 'Loan Request Details', 
+              children: [
+                if (requestDetails.anyEmptyFields()) ...[
+                  Text(requestDetailsError, textAlign: TextAlign.center),
+                ] else ...[
+                  LabeledField(data: requestDetails.studentId, label: 'Student ID'),
+                  LabeledField(data: requestDetails.generalWeightedAverage.toString(), label: 'General Weighted Average'),
+                  LabeledField(
+                    data: '₱${requestDetails.loanAmount.seperateNumberByThousands()}', 
+                    label: 'Monthly Income'
+                  ),
+                  LabeledField(data: requestDetails.paymentTerm, label: 'Payment Term'),
+                  LabeledField(data: requestDetails.paymentSchedule, label: 'Payment Schedule'),
+                  if (requestDetails.paymentNextDue != null) ...[
+                    LabeledField(data: requestDetails.paymentNextDue!, label: 'Payment Due Date'),
+                  ]
+                ]
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

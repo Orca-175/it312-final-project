@@ -21,7 +21,7 @@ class _TestState extends ConsumerState<Test> {
 
     // Get StudentDetails from database if it exists, set errorMessage otherwise
     ref.read(studentDetailsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((error) {
         setState(() {
           errorMessage = '$errorMessage\n${error.toString()}';
@@ -30,7 +30,7 @@ class _TestState extends ConsumerState<Test> {
 
     // Get GuardianDetails from database if it exists, set errorMessage otherwise
     ref.read(guardianDetailsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((error) {
         setState(() {
           errorMessage = '$errorMessage\n${error.toString()}';
@@ -39,7 +39,7 @@ class _TestState extends ConsumerState<Test> {
 
     // Get Requests from database if it exists, set errorMessage otherwise
     ref.read(requestsProvider(globalUserAccountId).notifier)
-      .getDetails(globalUserAccountId)
+      .getDetails()
       .catchError((error) {
         setState(() {
           errorMessage = '$errorMessage ${error.toString()}';
