@@ -71,7 +71,7 @@ GoRouter router = GoRouter(
       builder: (context, state, navigationShell) {
         return RootScaffold(
           body: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: navigationShell,
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -108,7 +108,7 @@ class RootScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
         title: Row(

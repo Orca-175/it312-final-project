@@ -1,50 +1,174 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:it312_final_project/constants/constants.dart';
+import 'package:it312_final_project/globals/globals.dart';
+import 'package:it312_final_project/providers/guardian_details_provider.dart';
 
-class GuardianDetailsForm extends StatefulWidget {
+class GuardianDetailsForm extends ConsumerStatefulWidget {
   const GuardianDetailsForm({super.key});
 
   @override
-  State<GuardianDetailsForm> createState() => _GuardianDetailsFormState();
+  ConsumerState<GuardianDetailsForm> createState() => _GuardianDetailsFormState();
 }
 
-class _GuardianDetailsFormState extends State<GuardianDetailsForm> {
+class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
+  final _formGlobalKey = GlobalKey<FormState>();
+
+  String _fullName = '';
+  String _relationship = '';
+  String _email = '';
+  String _phoneNumber = '';
+  String _address = '';
+  String _occupation = '';
+  String _employer= '';
+  String _employerPhoneNumber = '';
+  String _monthlyIncome = '';
+
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 300.0,
-        child: Form(
-          child: Column(
-            children: [
-              SizedBox(height: 16.0),
-              Text('Guardian Details', style: TextStyle(fontSize: 20.0)),
-              TextFormField(
-                decoration: InputDecoration(label: Text('Name')),
-              ),
-              TextFormField(
-                decoration: InputDecoration(label: Text('Relationship')),
-              ),
-              TextFormField(
-                decoration: InputDecoration(label: Text('Email')),
-              ),
-              TextFormField(
-                decoration: InputDecoration(label: Text('Phone Number')),
-              ),
-              TextFormField(
-                decoration: InputDecoration(label: Text('Address')),
-              ),
-              TextFormField(
-                decoration: InputDecoration(label: Text('Occupation')),
-              ),
-              TextFormField(
-                decoration: InputDecoration(label: Text('Monthly Income')),
-              ),
-              SizedBox(height: 24.0),
-              FilledButton(
-                onPressed: () {}, 
-                child: Text('Submit'),
-              ),
-            ],
+    final guardianDetails = ref.watch(guardianDetailsProvider(globalUserAccountId));
+
+    return SingleChildScrollView(
+      child: Center(
+        child: SizedBox(
+          width: 300.0,
+          child: Form(
+            key: _formGlobalKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 16.0),
+                const Text('Guardian Details', style: TextStyle(fontSize: 20.0)),
+                TextFormField(
+                  initialValue: guardianDetails.fullName,
+                  decoration: const InputDecoration(label: Text('Full Name')),
+                  onSaved: (value) => _fullName = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.relationship,
+                  decoration: const InputDecoration(label: Text('Relationship')),
+                  onSaved: (value) => _relationship = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.email,
+                  decoration: const InputDecoration(label: Text('Email')),
+                  onSaved: (value) => _email = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.phoneNumber,
+                  decoration: const InputDecoration(label: Text('Phone Number')),
+                  onSaved: (value) => _phoneNumber = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } if (value!.length > 11) {
+                      return phoneNumberFormatError;
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.address,
+                  decoration: const InputDecoration(label: Text('Address')),
+                  onSaved: (value) => _address = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.occupation,
+                  decoration: const InputDecoration(label: Text('Occupation')),
+                  onSaved: (value) => _occupation = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.employer,
+                  decoration: const InputDecoration(label: Text('Employer')),
+                  onSaved: (value) => _employer = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.employerPhoneNumber,
+                  decoration: const InputDecoration(label: Text('Employer Phone Number')),
+                  onSaved: (value) => _employerPhoneNumber = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } if (value!.length > 11) {
+                      return phoneNumberFormatError;
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.monthlyIncome,
+                  decoration: const InputDecoration(label: Text('Monthly Income')),
+                  onSaved: (value) => _monthlyIncome = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                SizedBox(height: 24.0),
+                FilledButton(
+                  onPressed: () async {
+                    if (_formGlobalKey.currentState!.validate()) {
+                      _formGlobalKey.currentState!.save();
+                      String operation = guardianDetails.anyEmptyFields() ? 'add' : 'update';
+                      await ref.read(guardianDetailsProvider(globalUserAccountId).notifier).submitDetails(
+                        _fullName, 
+                        _relationship, 
+                        _email, 
+                        _phoneNumber, 
+                        _address, 
+                        _occupation, 
+                        _employer, 
+                        _employerPhoneNumber, 
+                        _monthlyIncome, 
+                        operation,
+                      );
+                      if (!context.mounted) return;
+                      context.go('/profile_details');
+                    }
+                  }, 
+                  child: Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -56,13 +56,14 @@ class _LoanRequestState extends ConsumerState<LoanRequest> {
                   LabeledField(data: requestDetails.generalWeightedAverage.toString(), label: 'General Weighted Average'),
                   LabeledField(
                     data: '₱${requestDetails.loanAmount.seperateNumberByThousands()}', 
-                    label: 'Monthly Income'
+                    label: 'Loan Amount'
                   ),
                   LabeledField(data: requestDetails.paymentTerm, label: 'Payment Term'),
                   LabeledField(data: requestDetails.paymentSchedule, label: 'Payment Schedule'),
                   if (requestDetails.paymentNextDue != null) ...[
                     LabeledField(data: requestDetails.paymentNextDue!, label: 'Payment Due Date'),
-                  ]
+                  ],
+                  LabeledField(data: requestDetails.enrollmentStatus, label: 'Enrollment Status'),
                 ]
               ],
             ),

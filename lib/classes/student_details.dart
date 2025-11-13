@@ -31,7 +31,10 @@ class StudentDetails {
     }
   ) {
     if (phoneNumber != '' && (!phoneNumber.isNumeric() || phoneNumber.length > 11)) {
-      throw Exception('Phone numbers must be numeric and, at most, 11 digits long.');
+      throw Exception(phoneNumberFormatError);
+    }
+    if (email != '' && !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(email)) {
+      throw Exception(emailFormatError);
     }
 
     return StudentDetails._internal(
@@ -70,7 +73,6 @@ class StudentDetails {
 
   Future<String> submit(String operation) async {
     if (!(operation == 'add' ||  operation == 'update')) {
-      print('operation in submit: $operation');
       throw Exception('Parameter:operation must be set to either "add" or "update".');
     }
     Response response = await post(Uri.parse('$requestUrl/${operation}_student_details.php'),

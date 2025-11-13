@@ -97,21 +97,21 @@ class GuardianDetails {
   }
 
   Future<String> submit(String operation) async {
-    if (operation != 'add' || operation != 'update') {
+    if (!(operation == 'add' ||  operation == 'update')) {
       throw Exception('Parameter:operation must be set to either "add" or "update".');
     }
     Response response = await post(Uri.parse('$requestUrl/${operation}_guardian_details.php'),
       body: {
         'id': id.toString(),
-        'full_name': fullName,
+        'fullName': fullName,
         'relationship': relationship,
         'email': email,
-        'phone_number': phoneNumber,
+        'phoneNumber': phoneNumber,
         'address': address,
         'occupation': occupation,
         'employer': employer,
-        'employer_phone_number': employerPhoneNumber,
-        'monthly_income': monthlyIncome,
+        'employerPhoneNumber': employerPhoneNumber,
+        'monthlyIncome': monthlyIncome,
       },
     );
     if (response.statusCode != 200) {

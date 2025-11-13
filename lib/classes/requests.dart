@@ -46,14 +46,16 @@ class Requests {
       String? requestStatus,
     }
   ) {
-    if (studentId != '' && !Requests._isValidSchoolId(studentId)) {
-      throw Exception('Invalid Student ID.');
+    if (studentId != '' && !Requests.isValidSchoolId(studentId)) {
+      throw Exception(studentIdFormatError);
     }
 
     if (generalWeightedAverage != 0.0) {
-      if (generalWeightedAverage > 5 && !(generalWeightedAverage > 75 && generalWeightedAverage <= 100)) {
+      if (generalWeightedAverage > 5 && !(generalWeightedAverage >= 75 && generalWeightedAverage <= 100)) {
+        print('here!');
         throw Exception('Invalid General Weighted Average.');
-      } else if (generalWeightedAverage < 75 && !(generalWeightedAverage > 1 && generalWeightedAverage <= 5)) {
+      } else if (generalWeightedAverage < 75 && !(generalWeightedAverage >= 1 && generalWeightedAverage <= 5)) {
+        print('there!');
         throw Exception('Invalid General Weighted Average.');
       }
     }
@@ -108,14 +110,14 @@ class Requests {
   }
 
   Future<String> submit(String operation) async {
-    if (operation != 'add' || operation != 'update') {
+    if (!(operation == 'add' || operation == 'update')) {
       throw Exception('Parameter:operation must be set to either "add" or "update".');
     }
-    Response response = await post(Uri.parse('localhost/$requestUrl/${operation}_requests.php'),
+    Response response = await post(Uri.parse('$requestUrl/${operation}_requests.php'),
       body: {
         'id': id.toString(),
         'studentId': studentId,
-        'generalWeightedAverage': generalWeightedAverage.toString(),
+        'gwa': generalWeightedAverage.toString(),
         'loanAmount': loanAmount,
         'paymentTerm': paymentTerm,
         'paymentSchedule': paymentSchedule,
@@ -161,23 +163,26 @@ class Requests {
     return (double.parse(loanAmount) * 1.01).round().toString();
   }
 
-  static bool loanAmountIsValid(int generalWeightedAverage, int loanAmount) {
-    if (generalWeightedAverage <= 1.25 && loanAmount <= 75000) {
-        return true;
-    } else if (generalWeightedAverage <= 1.75 && loanAmount <= 60000) {
-        return true;
-    } else if (generalWeightedAverage <= 2 && loanAmount <= 50000) {
-        return true;
-    } else if (generalWeightedAverage <= 2.25 && loanAmount <= 40000) {
-        return true;
-    } else if (generalWeightedAverage <= 2.5 && loanAmount <= 30000) {
-        return true;
-    } else if (generalWeightedAverage <= 2.75 && loanAmount <= 15000) {
-        return true;
-    } else if (generalWeightedAverage <= 3 && loanAmount <= 10000) {
-        return true;
+  static double getMaxLoanAmount(double generalWeightedAverage) {
+    if (generalWeightedAverage >= 1 && generalWeightedAverage <= 5) {
+      if (generalWeightedAverage <= 1.25) {
+          return 75000.0;
+      } else if (generalWeightedAverage <= 1.75) {
+          return 60000.0;
+      } else if (generalWeightedAverage <= 2) {
+          return 50000.0;
+      } else if (generalWeightedAverage <= 2.25) {
+          return 40000.0;
+      } else if (generalWeightedAverage <= 2.5) {
+          return 30000.0;
+      } else if (generalWeightedAverage <= 2.75) {
+          return 15000.0;
+      } else {
+          return 10000.0;
+      }
+    } else {
+      return 10000.0;
     }
-    return false;
 }
 
   static double shsGwaToCollegeGwaRange(double generalWeightedAverage) {
@@ -203,8 +208,7 @@ class Requests {
     return generalWeightedAverage;
   }
 
-  static bool _isValidSchoolId(String schoolId) {
+  static bool isValidSchoolId(String schoolId) {
     return RegExp(r'^[1-9]-\d{2}-\d{3}$').hasMatch(schoolId);
   }
 }
-

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:it312_final_project/constants/constants.dart';
 import 'package:it312_final_project/globals/globals.dart';
 import 'package:it312_final_project/providers/student_details_provider.dart';
 
@@ -47,7 +48,7 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                 onSaved: (value) => _fullName = value!,
                 validator: (value) {
                   if (value == '') {
-                    return 'This field is required.';
+                    return requiredFieldError;
                   }
                   return null;
                 },
@@ -62,18 +63,17 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                     firstDate: DateTime(1950), 
                     lastDate: DateTime(2025),
                   );
-                  print('selected date: $selectedDate');
                   setState(() {
                     _dateOfBirthController.text = selectedDate != null ? 
                       '${selectedDate.year.toString()}-${selectedDate.month.toString()}-${selectedDate.day.toString()}' : '';
                   });
                 },
                 readOnly: true,
-                decoration: InputDecoration(label: Text('Date of Birth')),
+                decoration: const InputDecoration(label: Text('Date of Birth')),
                 onSaved: (value) => _dateOfBirth = value!,
                 validator: (value) {
                   if (value == '') {
-                    return 'This field is required.';
+                    return requiredFieldError;
                   }
                   return null;
                 },
@@ -84,7 +84,9 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                 onSaved: (value) => _email = value!,
                 validator: (value) {
                   if (value == '') {
-                    return 'This field is required.';
+                    return requiredFieldError;
+                  } if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value!)) {
+                    return emailFormatError;
                   }
                   return null;
                 },
@@ -95,7 +97,9 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                 onSaved: (value) => _phoneNumber = value!,
                 validator: (value) {
                   if (value == '') {
-                    return 'This field is required.';
+                    return requiredFieldError;
+                  } if (value!.length > 11) {
+                    return phoneNumberFormatError;
                   }
                   return null;
                 },
@@ -106,7 +110,7 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                 onSaved: (value) => _address = value!,
                 validator: (value) {
                   if (value == '') {
-                    return 'This field is required.';
+                    return requiredFieldError;
                   }
                   return null;
                 },
