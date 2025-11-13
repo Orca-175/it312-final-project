@@ -65,17 +65,21 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                 TextFormField(
                   initialValue: guardianDetails.email,
                   decoration: const InputDecoration(label: Text('Email')),
+                  keyboardType: TextInputType.emailAddress,
                   onSaved: (value) => _email = value!,
                   validator: (value) {
                     if (value == '') {
                       return requiredFieldError;
-                    } 
+                    } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value!)) {
+                      return emailFormatError;
+                    }
                     return null;
                   },
                 ),
                 TextFormField(
                   initialValue: guardianDetails.phoneNumber,
                   decoration: const InputDecoration(label: Text('Phone Number')),
+                  keyboardType: TextInputType.numberWithOptions(),
                   onSaved: (value) => _phoneNumber = value!,
                   validator: (value) {
                     if (value == '') {
@@ -122,6 +126,7 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                 TextFormField(
                   initialValue: guardianDetails.employerPhoneNumber,
                   decoration: const InputDecoration(label: Text('Employer Phone Number')),
+                  keyboardType: TextInputType.numberWithOptions(),
                   onSaved: (value) => _employerPhoneNumber = value!,
                   validator: (value) {
                     if (value == '') {
