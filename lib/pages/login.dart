@@ -89,36 +89,6 @@ class _LoginState extends State<Login> {
                 child: const Text('Login'),
               ),
               const SizedBox(height: 8.0),
-              // Test Route Login
-              FilledButton(
-                    onPressed: () async {
-                      if (_loginGlobalKey.currentState!.validate()) {
-                        _loginGlobalKey.currentState!.save();
-                        try {
-                          globalUserAccountId =  await Authentication.login(_username, _password);
-                          if (!context.mounted) return;
-                          context.go('/test');
-                        } catch (exception) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return HeaderMessageDialog(
-                                header: 'Login Failed', 
-                                message: exception.toString().removeExceptionPrefix(),
-                                action: TextButton(
-                                  onPressed: () {
-                                    context.pop();
-                                  }, 
-                                  child: const Text('Dismiss'),
-                                ),
-                              );
-                            }
-                          );
-                        }
-                      }
-                    }, 
-                child: const Text('Login and go to /test route'),
-              ),
               const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

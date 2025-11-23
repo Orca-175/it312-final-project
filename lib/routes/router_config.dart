@@ -8,15 +8,10 @@ import 'package:it312_final_project/pages/profile_details.dart';
 import 'package:it312_final_project/pages/register.dart';
 import 'package:it312_final_project/pages/requests_form.dart';
 import 'package:it312_final_project/pages/student_details_form.dart';
-import 'package:it312_final_project/tests/test.dart';
 
 GoRouter router = GoRouter(
   initialLocation: '/login',
   routes: [
-    GoRoute(
-      path: '/test',
-      builder: (context, state) => RootScaffold(body: Test())
-    ),
     GoRoute(
       path: '/register',
       builder: (context, state) => RootScaffold(body: Register()),
