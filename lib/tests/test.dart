@@ -73,6 +73,7 @@ class _TestState extends ConsumerState<Test> {
             const SizedBox(height: 16.0),
             const Text('Student Details', style: TextStyle(fontSize: 20.0)),
             Text('Name: ${studentDetails.fullName}'),
+            Text('Studend ID: ${studentDetails.studentId}'),
             Text('Date of Birth: ${studentDetails.dateOfBirth}'),
             Text('Email: ${studentDetails.email}'),
             Text('Phone Number: ${studentDetails.phoneNumber}'),
@@ -96,7 +97,6 @@ class _TestState extends ConsumerState<Test> {
           ...[
             const SizedBox(height: 16.0),
             const Text('Loan Request Details', style: TextStyle(fontSize: 20.0)),
-            Text('Studend ID: ${request.studentId}'),
             Text('GWA: ${request.generalWeightedAverage}'),
             Text('Loan Amount: ${request.loanAmount}'),
             Text('Payment Term: ${request.paymentTerm}'),

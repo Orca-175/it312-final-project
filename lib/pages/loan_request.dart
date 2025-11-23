@@ -52,7 +52,6 @@ class _LoanRequestState extends ConsumerState<LoanRequest> {
                 if (requestDetails.anyEmptyFields()) ...[
                   Text(requestDetailsError, textAlign: TextAlign.center),
                 ] else ...[
-                  LabeledField(data: requestDetails.studentId, label: 'Student ID'),
                   LabeledField(data: requestDetails.generalWeightedAverage.toString(), label: 'General Weighted Average'),
                   LabeledField(
                     data: '₱${requestDetails.loanAmount.seperateNumberByThousands()}', 

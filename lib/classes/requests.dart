@@ -1,12 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart';
 import 'package:it312_final_project/constants/constants.dart';
-import 'package:it312_final_project/extensions/string_utilities.dart';
 
 class Requests {
   int id;
-  String studentId;
   double generalWeightedAverage;
+  File? reportCard;
+  bool reportCardExistsInDatabase;
   String loanAmount;
   String paymentTerm;
   String paymentSchedule;
@@ -19,8 +20,9 @@ class Requests {
 
   Requests._internal(
     this.id,
-    this.studentId, 
     this.generalWeightedAverage,
+    this.reportCard,
+    this.reportCardExistsInDatabase,
     this.loanAmount,
     this.paymentTerm,
     this.paymentSchedule,
@@ -34,8 +36,9 @@ class Requests {
   factory Requests(
     int id,
     {
-      String studentId = '',
       double generalWeightedAverage = 0.0,
+      File? reportCard,
+      bool reportCardExistsInDatabase = false,
       String loanAmount = '',
       String paymentTerm = '',
       String paymentSchedule = '',
@@ -48,18 +51,17 @@ class Requests {
   ) {
     if (generalWeightedAverage != 0.0) {
       if (generalWeightedAverage > 5 && !(generalWeightedAverage >= 75 && generalWeightedAverage <= 100)) {
-        print('here!');
         throw Exception('Invalid General Weighted Average.');
       } else if (generalWeightedAverage < 75 && !(generalWeightedAverage >= 1 && generalWeightedAverage <= 5)) {
-        print('there!');
         throw Exception('Invalid General Weighted Average.');
       }
     }
 
     return Requests._internal(
       id,
-      studentId,
       generalWeightedAverage,
+      reportCard,
+      reportCardExistsInDatabase,
       loanAmount,
       paymentTerm,
       paymentSchedule,
@@ -79,7 +81,6 @@ class Requests {
 
     Map responseData = jsonDecode(response.body);
 
-    String studentId = responseData['student_id'];
     double generalWeightedAverage = double.parse(responseData['general_weighted_average'].toString());
     String loanAmount = responseData['loan_amount'].toString();
     String paymentTerm = responseData['payment_term'];
@@ -92,8 +93,8 @@ class Requests {
 
     return Requests(
       id,
-      studentId: studentId,
       generalWeightedAverage: generalWeightedAverage,
+      reportCardExistsInDatabase: true,
       loanAmount: loanAmount,
       paymentTerm: paymentTerm,
       paymentSchedule: paymentSchedule,
@@ -109,29 +110,35 @@ class Requests {
     if (!(operation == 'add' || operation == 'update')) {
       throw Exception('Parameter:operation must be set to either "add" or "update".');
     }
-    Response response = await post(Uri.parse('$requestUrl/${operation}_requests.php'),
-      body: {
-        'id': id.toString(),
-        'studentId': studentId,
-        'gwa': generalWeightedAverage.toString(),
-        'loanAmount': loanAmount,
-        'paymentTerm': paymentTerm,
-        'paymentSchedule': paymentSchedule,
-        'gradeLevel': gradeLevel,
-        'course': course,
-        'enrollmentStatus': enrollmentStatus,
-      },
-    );
-    if (response.statusCode != 200) {
-      throw Exception(response.body);
+
+    final request = MultipartRequest('POST', Uri.parse('$requestUrl/${operation}_requests.php'));
+    if (reportCard != null) {
+      request.files.add(
+        await MultipartFile.fromPath('reportCard', reportCard!.path)
+      );
     }
 
-    return response.body;
+    request.fields['id'] = id.toString();
+    request.fields['gwa'] = generalWeightedAverage.toString();
+    request.fields['loanAmount'] = loanAmount;
+    request.fields['paymentTerm'] = paymentTerm;
+    request.fields['paymentSchedule'] = paymentSchedule;
+    request.fields['gradeLevel'] = gradeLevel;
+    request.fields['course'] = course;
+    request.fields['enrollmentStatus'] = enrollmentStatus;
+
+    final response = await request.send();
+
+    final responseBody = await response.stream.bytesToString();
+    if (response.statusCode != 200) {
+      throw Exception(responseBody);
+    }
+
+    return responseBody;
   }
 
   bool anyEmptyFields() {
     if (
-      studentId == '' ||
       generalWeightedAverage == 0.0 ||
       loanAmount == '' ||
       paymentTerm == '' ||

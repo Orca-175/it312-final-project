@@ -60,7 +60,7 @@ final class GuardianDetailsNotifierProvider
 }
 
 String _$guardianDetailsNotifierHash() =>
-    r'6abb24e26c64ba91cd92737d73ffd29d22a44e8d';
+    r'70a77223291c5d4678524ac0853da80d5e257649';
 
 final class GuardianDetailsNotifierFamily extends $Family
     with

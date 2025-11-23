@@ -24,7 +24,7 @@ class GuardianDetailsNotifier extends _$GuardianDetailsNotifier {
     String monthlyIncome,
     String operation
   ) async {
-    state = GuardianDetails(
+    final details = GuardianDetails(
       state.id, 
       firstName: firstName, 
       lastName: lastName, 
@@ -39,7 +39,10 @@ class GuardianDetailsNotifier extends _$GuardianDetailsNotifier {
       monthlyIncome: monthlyIncome,
     );
 
-    return await state.submit(operation);
+    String success = await details.submit(operation);
+    state = details;
+
+    return success;
   }
 
   Future<void> getDetails() async {

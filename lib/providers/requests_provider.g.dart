@@ -58,7 +58,7 @@ final class RequestsNotifierProvider
   }
 }
 
-String _$requestsNotifierHash() => r'5aeccce60fecded883b92bd69746d8f9c2f3577e';
+String _$requestsNotifierHash() => r'abb363c2c0b72990d35f53c91a9f1c5e5b5109e7';
 
 final class RequestsNotifierFamily extends $Family
     with

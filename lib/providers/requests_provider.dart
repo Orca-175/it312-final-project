@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:it312_final_project/classes/requests.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,8 +13,8 @@ class RequestsNotifier extends _$RequestsNotifier {
   }
 
   Future<String> submitDetails(
-    String studentId,
     double generalWeightedAverage,
+    File? reportCard,
     String loanAmount,
     String paymentTerm,
     String paymentSchedule,
@@ -21,10 +23,10 @@ class RequestsNotifier extends _$RequestsNotifier {
     String enrollmentStatus,
     String operation
   ) async {
-    state = Requests(
+    final details = Requests(
       state.id, 
-      studentId: studentId,
       generalWeightedAverage: generalWeightedAverage,
+      reportCard: reportCard,
       loanAmount: loanAmount,
       paymentTerm: paymentTerm,
       paymentSchedule: paymentSchedule,
@@ -33,7 +35,11 @@ class RequestsNotifier extends _$RequestsNotifier {
       enrollmentStatus: enrollmentStatus,
     );
 
-    return await state.submit(operation);
+    final success = await details.submit(operation);
+    state = details;
+    getDetails();
+
+    return success;
   }
 
   Future<void> getDetails() async {

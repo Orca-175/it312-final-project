@@ -21,7 +21,7 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
     String address,
     String operation
   ) async {
-    state = StudentDetails(
+    final details = StudentDetails(
       state.id, 
       studentId: studentId, 
       firstName: firstName, 
@@ -33,7 +33,10 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
       address: address
     );
 
-    return await state.submit(operation);
+    String success = await details.submit(operation);
+    state = details;
+
+    return success;
   }
 
   Future<void> getDetails() async {
