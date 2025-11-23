@@ -114,7 +114,20 @@ class RootScaffold extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(width: 80.0, child: Image.asset('assets/brand/scholarpay_logo_variant3.png')), 
+            Container(
+              width: 80.0,
+              decoration: BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.circular(7.0),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0.0, 2.0),
+                    blurRadius: 5.0, 
+                    spreadRadius: -4.0),
+                ]
+              ),
+              child: Image.asset('assets/brand/scholarpay_logo.png'),
+              ), 
             Text(' | '), 
             Text('ScholarPay'),
           ],

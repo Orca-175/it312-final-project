@@ -8,11 +8,16 @@ class StudentDetails {
   late String studentId;
   late String firstName;
   late String lastName;
-  late String middleName;
+  late String middleName; // Optional
   late String dateOfBirth;
   late String email;
   late String phoneNumber;
-  late String address;
+  late String apartmentNumber; // Optional
+  late String unitNumber;
+  late String street;
+  late String barangay;
+  late String city;
+  late String region;
 
   StudentDetails._internal(
     this.id, 
@@ -23,7 +28,12 @@ class StudentDetails {
     this.dateOfBirth, 
     this.email, 
     this.phoneNumber, 
-    this.address
+    this.apartmentNumber,
+    this.unitNumber,
+    this.street,
+    this.barangay,
+    this.city,
+    this.region,
   );
 
   factory StudentDetails(
@@ -36,7 +46,12 @@ class StudentDetails {
       String dateOfBirth = '', 
       String email = '', 
       String phoneNumber = '', 
-      String address = '',
+      String apartmentNumber= '',
+      String unitNumber = '',
+      String street = '',
+      String barangay = '',
+      String city = '',
+      String region = '',
     }
   ) {
     if (studentId != '' && !StudentDetails.isValidSchoolId(studentId)) {
@@ -58,7 +73,12 @@ class StudentDetails {
       dateOfBirth,
       email,
       phoneNumber,
-      address,
+      apartmentNumber,
+      unitNumber,
+      street,
+      barangay,
+      city,
+      region,
     );
   }
 
@@ -77,7 +97,12 @@ class StudentDetails {
     String dateOfBirth = responseData['date_of_birth'];
     String email = responseData['email'];
     String phoneNumber = responseData['phone_number'];
-    String address = responseData['address'];
+    String apartmentNumber = responseData['apartment_number'];
+    String unitNumber = responseData['unit_number'];
+    String street = responseData['street'];
+    String barangay = responseData['barangay'];
+    String city = responseData['city'];
+    String region = responseData['region'];
 
     return StudentDetails._internal(
       id,
@@ -88,7 +113,12 @@ class StudentDetails {
       dateOfBirth,
       email,
       phoneNumber,
-      address,
+      apartmentNumber,
+      unitNumber,
+      street,
+      barangay,
+      city,
+      region,
     );
   }
 
@@ -106,7 +136,12 @@ class StudentDetails {
         'dateOfBirth': dateOfBirth,
         'email': email,
         'phoneNumber': phoneNumber,
-        'address': address,
+        'apartmentNumber': apartmentNumber,
+        'unitNumber': unitNumber,
+        'street': street,
+        'barangay': barangay,
+        'city': city,
+        'region': region,
       },
     );
     if (response.statusCode != 200) {
@@ -117,13 +152,20 @@ class StudentDetails {
   }
 
   String get fullName {
-    String middleInitial = middleName == '' ? '' : '${middleName.substring(0, 1)}.'; 
+    final middleInitial = middleName == '' ? '' : '${middleName.substring(0, 1)}.'; 
     return '$firstName $middleInitial $lastName';
+  }
+
+  String get address {
+    final tempApartmentNumber = apartmentNumber != '' ? '$apartmentNumber, ' : '';
+    // ignore: prefer_interpolation_to_compose_strings
+    return tempApartmentNumber + '$unitNumber $street St., $barangay, $city, $region';
   }
 
   bool anyEmptyFields() {
     if (id == 0 || studentId == '' || firstName == '' || lastName == '' || middleName == '' || dateOfBirth == '' || 
-      email == '' || phoneNumber == '' || address == '') {
+      email == '' || phoneNumber == '' || unitNumber == '' || street == '' || barangay == '' || city == '' || 
+      region == '') {
         return true;
     }
     

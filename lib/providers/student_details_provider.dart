@@ -18,7 +18,12 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
     String dateOfBirth, 
     String email, 
     String phoneNumber, 
-    String address,
+    String apartmenNumber,
+    String unitNumber,
+    String street,
+    String barangay,
+    String city,
+    String region,
     String operation
   ) async {
     final details = StudentDetails(
@@ -30,7 +35,12 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
       dateOfBirth: dateOfBirth, 
       email: email, 
       phoneNumber: phoneNumber, 
-      address: address
+      apartmentNumber: apartmenNumber,
+      unitNumber: unitNumber,
+      street: street,
+      barangay: barangay,
+      city: city,
+      region: region,
     );
 
     String success = await details.submit(operation);

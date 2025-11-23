@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:it312_final_project/constants/constants.dart';
 import 'package:it312_final_project/globals/globals.dart';
 import 'package:it312_final_project/providers/guardian_details_provider.dart';
-import 'package:it312_final_project/widgets/form_field_divider.dart';
 import 'package:it312_final_project/widgets/header_message_dialog.dart';
 
 class GuardianDetailsForm extends ConsumerStatefulWidget {
@@ -23,7 +22,12 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
   String _relationship = '';
   String _email = '';
   String _phoneNumber = '';
-  String _address = '';
+  String _apartmentNumber = '';
+  String _unitNumber = '';
+  String _street = '';
+  String _barangay = '';
+  String _city = '';
+  String _region = '';
   String _occupation = '';
   String _employer= '';
   String _employerPhoneNumber = '';
@@ -69,7 +73,7 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                     ),
                     TextFormField(
                       initialValue: guardianDetails.middleName,
-                      decoration: const InputDecoration(label: Text('Middle Name')),
+                      decoration: const InputDecoration(label: Text('Middle Name (Optional)')),
                       onSaved: (value) => _middleName = value!,
                       validator: (value) {
                         if (value == '') {
@@ -120,13 +124,62 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                     ),
                     const SizedBox(height: 24.0),
                     TextFormField(
-                      initialValue: guardianDetails.address,
-                      decoration: const InputDecoration(label: Text('Address')),
-                      onSaved: (value) => _address = value!,
+                      initialValue: guardianDetails.apartmentNumber ,
+                      decoration: const InputDecoration(label: Text('Apartment Number (Optional)')),
+                      onSaved: (value) => _apartmentNumber = value!,
+                    ),
+                    TextFormField(
+                      initialValue: guardianDetails.unitNumber ,
+                      decoration: const InputDecoration(label: Text('House Number')),
+                      onSaved: (value) => _unitNumber = value!,
                       validator: (value) {
                         if (value == '') {
                           return requiredFieldError;
-                        } 
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: guardianDetails.street ,
+                      decoration: const InputDecoration(label: Text('Street')),
+                      onSaved: (value) => _street = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: guardianDetails.barangay ,
+                      decoration: const InputDecoration(label: Text('Barangay')),
+                      onSaved: (value) => _barangay = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: guardianDetails.city ,
+                      decoration: const InputDecoration(label: Text('City')),
+                      onSaved: (value) => _city = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: guardianDetails.region ,
+                      decoration: const InputDecoration(label: Text('Region')),
+                      onSaved: (value) => _region = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
                         return null;
                       },
                     ),
@@ -170,6 +223,7 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                     TextFormField(
                       initialValue: guardianDetails.monthlyIncome,
                       decoration: const InputDecoration(label: Text('Monthly Income')),
+                      keyboardType: TextInputType.numberWithOptions(),
                       onSaved: (value) => _monthlyIncome = value!,
                       validator: (value) {
                         if (value == '') {
@@ -192,7 +246,12 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                               _relationship, 
                               _email, 
                               _phoneNumber, 
-                              _address, 
+                              _apartmentNumber,
+                              _unitNumber,
+                              _street,
+                              _barangay,
+                              _city,
+                              _region, 
                               _occupation, 
                               _employer, 
                               _employerPhoneNumber, 

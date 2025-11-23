@@ -7,11 +7,16 @@ class GuardianDetails {
   int id;  
   String firstName;
   String lastName;
-  String middleName;
+  String middleName; // Optional
   String relationship;
   String email;
   String phoneNumber;
-  String address;
+  late String apartmentNumber; // Optional
+  late String unitNumber;
+  late String street;
+  late String barangay;
+  late String city;
+  late String region;
   String occupation;
   String employer;
   String employerPhoneNumber;
@@ -26,7 +31,12 @@ class GuardianDetails {
     this.relationship, 
     this.email, 
     this.phoneNumber, 
-    this.address,
+    this.apartmentNumber,
+    this.unitNumber,
+    this.street,
+    this.barangay,
+    this.city,
+    this.region,
     this.occupation, 
     this.employer, 
     this.employerPhoneNumber,
@@ -42,7 +52,12 @@ class GuardianDetails {
       String relationship = '',
       String email = '',
       String phoneNumber = '',
-      String address = '',
+      String apartmentNumber= '',
+      String unitNumber = '',
+      String street = '',
+      String barangay = '',
+      String city = '',
+      String region = '',
       String occupation = '',
       String employer = '',
       String employerPhoneNumber = '',
@@ -64,7 +79,12 @@ class GuardianDetails {
       relationship,
       email,
       phoneNumber,
-      address,
+      apartmentNumber,
+      unitNumber,
+      street,
+      barangay,
+      city,
+      region,
       occupation,
       employer,
       employerPhoneNumber,
@@ -86,7 +106,12 @@ class GuardianDetails {
     String relationship = responseData['relationship'];
     String email = responseData['email'];
     String phoneNumber = responseData['phone_number'];
-    String address = responseData['address'];
+    String apartmentNumber = responseData['apartment_number'];
+    String unitNumber = responseData['unit_number'];
+    String street = responseData['street'];
+    String barangay = responseData['barangay'];
+    String city = responseData['city'];
+    String region = responseData['region'];
     String occupation = responseData['occupation'];
     String employer= responseData['employer'];
     String employerPhoneNumber = responseData['employer_phone_number'];
@@ -100,7 +125,12 @@ class GuardianDetails {
       relationship, 
       email, 
       phoneNumber, 
-      address, 
+      apartmentNumber,
+      unitNumber,
+      street,
+      barangay,
+      city,
+      region,
       occupation, 
       employer, 
       employerPhoneNumber, 
@@ -121,7 +151,12 @@ class GuardianDetails {
         'relationship': relationship,
         'email': email,
         'phoneNumber': phoneNumber,
-        'address': address,
+        'apartmentNumber': apartmentNumber,
+        'unitNumber': unitNumber,
+        'street': street,
+        'barangay': barangay,
+        'city': city,
+        'region': region,
         'occupation': occupation,
         'employer': employer,
         'employerPhoneNumber': employerPhoneNumber,
@@ -140,6 +175,12 @@ class GuardianDetails {
     return '$firstName $middleInitial $lastName';
   }
 
+  String get address {
+    final tempApartmentNumber = apartmentNumber != '' ? '$apartmentNumber, ' : '';
+    // ignore: prefer_interpolation_to_compose_strings
+    return tempApartmentNumber + '$unitNumber $street St., $barangay, $city, $region';
+  }
+
   bool anyEmptyFields() {
     if (
       firstName == '' || 
@@ -147,7 +188,11 @@ class GuardianDetails {
       relationship == '' || 
       email == '' || 
       phoneNumber == '' || 
-      address == '' || 
+      unitNumber == '' || 
+      street == '' || 
+      barangay == '' || 
+      city == '' || 
+      region == '' ||
       occupation == '' ||
       employer == '' ||
       employerPhoneNumber == '' ||

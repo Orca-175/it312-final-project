@@ -26,7 +26,12 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
   String _dateOfBirth = '';
   String _email = '';
   String _phoneNumber = '';
-  String _address = '';
+  String _apartmentNumber = '';
+  String _unitNumber = '';
+  String _street = '';
+  String _barangay = '';
+  String _city = '';
+  String _region = '';
 
   @override
   void initState() {
@@ -87,7 +92,7 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                     ),
                     TextFormField(
                       initialValue: studentDetails.middleName,
-                      decoration: const InputDecoration(label: Text('Middle Name')),
+                      decoration: const InputDecoration(label: Text('Middle Name (Optional)')),
                       onSaved: (value) => _middleName = value!,
                       validator: (value) {
                         if (value == '') {
@@ -152,9 +157,58 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                     ),
                     const SizedBox(height: 24.0),
                     TextFormField(
-                      initialValue: studentDetails.address ,
-                      decoration: const InputDecoration(label: Text('Address')),
-                      onSaved: (value) => _address = value!,
+                      initialValue: studentDetails.apartmentNumber ,
+                      decoration: const InputDecoration(label: Text('Apartment Number (Optional)')),
+                      onSaved: (value) => _apartmentNumber = value!,
+                    ),
+                    TextFormField(
+                      initialValue: studentDetails.unitNumber ,
+                      decoration: const InputDecoration(label: Text('House Number')),
+                      onSaved: (value) => _unitNumber = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: studentDetails.street ,
+                      decoration: const InputDecoration(label: Text('Street')),
+                      onSaved: (value) => _street = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: studentDetails.barangay ,
+                      decoration: const InputDecoration(label: Text('Barangay')),
+                      onSaved: (value) => _barangay = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: studentDetails.city ,
+                      decoration: const InputDecoration(label: Text('City')),
+                      onSaved: (value) => _city = value!,
+                      validator: (value) {
+                        if (value == '') {
+                          return requiredFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: studentDetails.region ,
+                      decoration: const InputDecoration(label: Text('Region')),
+                      onSaved: (value) => _region = value!,
                       validator: (value) {
                         if (value == '') {
                           return requiredFieldError;
@@ -169,18 +223,22 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                           _formGlobalKey.currentState!.save();
                           String operation = studentDetails.anyEmptyFields() ? 'add' : 'update';
                           try {
-                            await ref.read(studentDetailsProvider(globalUserAccountId).notifier).
-                              submitDetails(
-                                _studentId, 
-                                _firstName, 
-                                _lastName, 
-                                _middleName, 
-                                _dateOfBirth, 
-                                _email, 
-                                _phoneNumber, 
-                                _address, 
-                                operation
-                              ); 
+                            await ref.read(studentDetailsProvider(globalUserAccountId).notifier).submitDetails(
+                              _studentId, 
+                              _firstName, 
+                              _lastName, 
+                              _middleName, 
+                              _dateOfBirth, 
+                              _email, 
+                              _phoneNumber, 
+                              _apartmentNumber,
+                              _unitNumber,
+                              _street,
+                              _barangay,
+                              _city,
+                              _region, 
+                              operation
+                            ); 
                           } catch (error) {
                             if (!context.mounted) return;
                             showDialog(
