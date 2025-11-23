@@ -11,7 +11,9 @@ class GuardianDetailsNotifier extends _$GuardianDetailsNotifier {
   }
 
   Future<String> submitDetails(
-    String fullName,
+    String firstName,
+    String lastName,
+    String middleName,
     String relationship, 
     String email, 
     String phoneNumber, 
@@ -24,7 +26,9 @@ class GuardianDetailsNotifier extends _$GuardianDetailsNotifier {
   ) async {
     state = GuardianDetails(
       state.id, 
-      fullName: fullName, 
+      firstName: firstName, 
+      lastName: lastName, 
+      middleName: middleName, 
       relationship: relationship, 
       email: email, 
       phoneNumber: phoneNumber, 

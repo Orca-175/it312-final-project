@@ -56,19 +56,6 @@ class _RequestsFormState extends ConsumerState<RequestsForm> {
                 const SizedBox(height: 16.0),
                 const Text('Requests Details', style: TextStyle(fontSize: 20.0)),
                 TextFormField(
-                  initialValue: requestDetails.studentId,
-                  decoration: const InputDecoration(label: Text('Student ID')),
-                  onSaved: (value) => _studentId = value!,
-                  validator: (value) {
-                    if (value == '') {
-                      return requiredFieldError;
-                    } else if (!Requests.isValidSchoolId(value!)) {
-                      return studentIdFormatError;
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
                   initialValue: requestDetails.generalWeightedAverage == 0.0 ? '' : 
                     requestDetails.generalWeightedAverage.toString(),
                   decoration: const InputDecoration(label: Text('General Weighted Average')),

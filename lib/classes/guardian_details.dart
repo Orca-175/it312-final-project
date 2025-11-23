@@ -5,7 +5,9 @@ import 'package:it312_final_project/extensions/string_utilities.dart';
 
 class GuardianDetails {
   int id;  
-  String fullName;
+  String firstName;
+  String lastName;
+  String middleName;
   String relationship;
   String email;
   String phoneNumber;
@@ -18,7 +20,9 @@ class GuardianDetails {
 
   GuardianDetails._internal(
     this.id, 
-    this.fullName, 
+    this.firstName, 
+    this.lastName, 
+    this.middleName, 
     this.relationship, 
     this.email, 
     this.phoneNumber, 
@@ -32,7 +36,9 @@ class GuardianDetails {
   factory GuardianDetails(
     int id,
     {
-      String fullName = '',
+      String firstName = '',
+      String lastName= '',
+      String middleName= '',
       String relationship = '',
       String email = '',
       String phoneNumber = '',
@@ -52,7 +58,9 @@ class GuardianDetails {
 
     return GuardianDetails._internal(
       id,
-      fullName,
+      firstName,
+      lastName,
+      middleName,
       relationship,
       email,
       phoneNumber,
@@ -72,7 +80,9 @@ class GuardianDetails {
 
     Map responseData = jsonDecode(response.body);
 
-    String fullName = responseData['full_name'];
+    String firstName = responseData['first_name'];
+    String lastName = responseData['last_name'];
+    String middleName = responseData['middle_name'];
     String relationship = responseData['relationship'];
     String email = responseData['email'];
     String phoneNumber = responseData['phone_number'];
@@ -84,7 +94,9 @@ class GuardianDetails {
 
     return GuardianDetails._internal(
       id, 
-      fullName,  
+      firstName,
+      lastName,
+      middleName,  
       relationship, 
       email, 
       phoneNumber, 
@@ -103,7 +115,9 @@ class GuardianDetails {
     Response response = await post(Uri.parse('$requestUrl/${operation}_guardian_details.php'),
       body: {
         'id': id.toString(),
-        'fullName': fullName,
+        'firstName': firstName,
+        'lastName': lastName,
+        'middleName': middleName,
         'relationship': relationship,
         'email': email,
         'phoneNumber': phoneNumber,
@@ -121,9 +135,15 @@ class GuardianDetails {
     return response.body;
   }
 
+  String get fullName {
+    String middleInitial = middleName == '' ? '' : '${middleName.substring(0, 1)}.';
+    return '$firstName $middleInitial $lastName';
+  }
+
   bool anyEmptyFields() {
     if (
-      fullName == '' || 
+      firstName == '' || 
+      lastName == '' || 
       relationship == '' || 
       email == '' || 
       phoneNumber == '' || 

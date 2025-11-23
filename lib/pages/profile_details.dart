@@ -66,6 +66,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                       Text(studentDetailsError, textAlign: TextAlign.center),
                     ] else ...[
                       LabeledField(data: studentDetails.fullName, label: 'Full Name'),
+                      LabeledField(data: studentDetails.studentId, label: 'Student ID'),
                       LabeledField(data: studentDetails.dateOfBirth, label: 'Date of Birth'),
                       LabeledField(data: studentDetails.email, label: 'Email'),
                       LabeledField(data: studentDetails.phoneNumber, label: 'Phone Number'),

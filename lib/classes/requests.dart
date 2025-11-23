@@ -46,10 +46,6 @@ class Requests {
       String? requestStatus,
     }
   ) {
-    if (studentId != '' && !Requests.isValidSchoolId(studentId)) {
-      throw Exception(studentIdFormatError);
-    }
-
     if (generalWeightedAverage != 0.0) {
       if (generalWeightedAverage > 5 && !(generalWeightedAverage >= 75 && generalWeightedAverage <= 100)) {
         print('here!');
@@ -208,7 +204,4 @@ class Requests {
     return generalWeightedAverage;
   }
 
-  static bool isValidSchoolId(String schoolId) {
-    return RegExp(r'^[1-9]-\d{2}-\d{3}$').hasMatch(schoolId);
-  }
 }

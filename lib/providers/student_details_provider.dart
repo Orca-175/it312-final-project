@@ -11,7 +11,10 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
   }
 
   Future<String> submitDetails(
-    String fullName,
+    String studentId,
+    String firstName,
+    String lastName,
+    String middleName,
     String dateOfBirth, 
     String email, 
     String phoneNumber, 
@@ -20,7 +23,10 @@ class StudentDetailsNotifier extends _$StudentDetailsNotifier {
   ) async {
     state = StudentDetails(
       state.id, 
-      fullName: fullName, 
+      studentId: studentId, 
+      firstName: firstName, 
+      lastName: lastName, 
+      middleName: middleName, 
       dateOfBirth: dateOfBirth, 
       email: email, 
       phoneNumber: phoneNumber, 

@@ -15,7 +15,9 @@ class GuardianDetailsForm extends ConsumerStatefulWidget {
 class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
   final _formGlobalKey = GlobalKey<FormState>();
 
-  String _fullName = '';
+  String _firstName = '';
+  String _lastName = '';
+  String _middleName = '';
   String _relationship = '';
   String _email = '';
   String _phoneNumber = '';
@@ -41,9 +43,31 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                 const SizedBox(height: 16.0),
                 const Text('Guardian Details', style: TextStyle(fontSize: 20.0)),
                 TextFormField(
-                  initialValue: guardianDetails.fullName,
-                  decoration: const InputDecoration(label: Text('Full Name')),
-                  onSaved: (value) => _fullName = value!,
+                  initialValue: guardianDetails.firstName,
+                  decoration: const InputDecoration(label: Text('First Name')),
+                  onSaved: (value) => _firstName = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.lastName,
+                  decoration: const InputDecoration(label: Text('Last Name')),
+                  onSaved: (value) => _lastName = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } 
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: guardianDetails.middleName,
+                  decoration: const InputDecoration(label: Text('Middle Name')),
+                  onSaved: (value) => _middleName = value!,
                   validator: (value) {
                     if (value == '') {
                       return requiredFieldError;
@@ -155,7 +179,9 @@ class _GuardianDetailsFormState extends ConsumerState<GuardianDetailsForm> {
                       _formGlobalKey.currentState!.save();
                       String operation = guardianDetails.anyEmptyFields() ? 'add' : 'update';
                       await ref.read(guardianDetailsProvider(globalUserAccountId).notifier).submitDetails(
-                        _fullName, 
+                        _firstName, 
+                        _lastName, 
+                        _middleName, 
                         _relationship, 
                         _email, 
                         _phoneNumber, 

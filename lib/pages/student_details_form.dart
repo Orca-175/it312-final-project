@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:it312_final_project/classes/student_details.dart';
 import 'package:it312_final_project/constants/constants.dart';
 import 'package:it312_final_project/globals/globals.dart';
 import 'package:it312_final_project/providers/student_details_provider.dart';
@@ -17,7 +18,10 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
   final TextEditingController _dateOfBirthController = TextEditingController();
 
 
-  String _fullName = '';
+  String _studentId = '';
+  String _firstName = '';
+  String _lastName = '';
+  String _middleName = '';
   String _dateOfBirth = '';
   String _email = '';
   String _phoneNumber = '';
@@ -44,9 +48,44 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                 const SizedBox(height: 16.0),
                 const Text('Student Details', style: TextStyle(fontSize: 20.0)),
                 TextFormField(
-                  initialValue: studentDetails.fullName,
-                  decoration: const InputDecoration(label: Text('Full Name')),
-                  onSaved: (value) => _fullName = value!,
+                  initialValue: studentDetails.studentId,
+                  decoration: const InputDecoration(label: Text('Student ID')),
+                  onSaved: (value) => _studentId = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    } else if (!StudentDetails.isValidSchoolId(value!)) {
+                      return studentIdFormatError;
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: studentDetails.firstName,
+                  decoration: const InputDecoration(label: Text('First Name')),
+                  onSaved: (value) => _firstName = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: studentDetails.lastName,
+                  decoration: const InputDecoration(label: Text('Last Name')),
+                  onSaved: (value) => _lastName = value!,
+                  validator: (value) {
+                    if (value == '') {
+                      return requiredFieldError;
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: studentDetails.middleName,
+                  decoration: const InputDecoration(label: Text('Middle Name')),
+                  onSaved: (value) => _middleName = value!,
                   validator: (value) {
                     if (value == '') {
                       return requiredFieldError;
@@ -125,7 +164,17 @@ class _StudentDetailsFormState extends ConsumerState<StudentDetailsForm> {
                       _formGlobalKey.currentState!.save();
                       String operation = studentDetails.anyEmptyFields() ? 'add' : 'update';
                       await ref.read(studentDetailsProvider(globalUserAccountId).notifier).
-                        submitDetails(_fullName, _dateOfBirth, _email, _phoneNumber, _address, operation); 
+                        submitDetails(
+                          _studentId, 
+                          _firstName, 
+                          _lastName, 
+                          _middleName, 
+                          _dateOfBirth, 
+                          _email, 
+                          _phoneNumber, 
+                          _address, 
+                          operation
+                        ); 
                       if (!context.mounted) return;
                       context.go('/profile_details');
                     }

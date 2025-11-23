@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:it312_final_project/extensions/string_utilities.dart';
@@ -93,8 +94,8 @@ class _DashboardState extends ConsumerState<Dashboard> {
                         label: 'Student',
                         name: studentDetails.fullName, 
                         children: [
+                          LabeledField(data: studentDetails.studentId, label: 'Student ID'),
                           if (!requestDetails.anyEmptyFields()) ...[
-                            LabeledField(data: requestDetails.studentId, label: 'Student ID'),
                             LabeledField(data: requestDetails.gradeLevel, label: 'Year'),
                             LabeledField(data: requestDetails.course, label: 'Strand/Course'),
                           ],
